@@ -1,11 +1,9 @@
-const express = require("express")
-const moviesRoutes = require('./routes/movies');
-const app = express()
+const express = require("express");
+const moviesRoutes = require("./routes/movies");
+const app = express();
 
-
-app.use("/", moviesRoutes)
-
+app.use("/", moviesRoutes);
 
 app.listen(3000, () => {
-    console.log("Servidor iniciado")
-})
+  console.log("Server started");
+});

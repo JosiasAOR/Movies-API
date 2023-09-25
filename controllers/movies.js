@@ -1,11 +1,13 @@
 const path = require("path");
-const fs = require("fs")
+const fs = require("fs");
 
 exports.moviesGet = (req, res) => {
-    const pastaMovies = path.join(__dirname,"..", "movies") 
+    console.log(req.params.id)
+    const id = req.params.id
+  const pastaMovies = path.join(__dirname, "..", "movies");
 
-  const arquivoDoVideo = path.join(pastaMovies, "meuVideo.mp4");
-  console.log(arquivoDoVideo, "detalhes")
+  const arquivoDoVideo = path.join(pastaMovies, `${id}.mp4`);
+  console.log(arquivoDoVideo, "detalhes");
 
   if (fs.existsSync(arquivoDoVideo)) {
     const detalhesDoArquivo = fs.statSync(arquivoDoVideo);
