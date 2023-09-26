@@ -1,28 +1,15 @@
-const path = require("path");
-const fs = require("fs");
+const database = require('../model/db')
 
-exports.moviesGet = (req, res) => {
-    console.log(req.params.id)
-    const id = req.params.id
-  const pastaMovies = path.join(__dirname, "..", "movies");
 
-  const arquivoDoVideo = path.join(pastaMovies, `${id}.mp4`);
-  console.log(arquivoDoVideo, "detalhes");
+exports.exibirVideos=(req, res) => {
+database.query(`SELECT * FROM SUA_TABELA ;`).then(
 
-  if (fs.existsSync(arquivoDoVideo)) {
-    const detalhesDoArquivo = fs.statSync(arquivoDoVideo);
+(resultado)=>{
+    res.status(200).send({tarefas: resultado.rows});
+}, (erro)=>{
+    res.status(500).send({erro: erro})
+}
 
-    const tamanhoDoVideo = detalhesDoArquivo.size;
 
-    const cabecalhoDaResposta = {
-      "Content-Length": tamanhoDoVideo,
-      "Content-Type": "video/mp4",
-    };
-
-    res.writeHead(200, cabecalhoDaResposta);
-
-    fs.createReadStream(arquivoDoVideo).pipe(res);
-  } else {
-    res.status(404).send("Arquivo de vídeo não encontrado");
-  }
-};
+)
+}
