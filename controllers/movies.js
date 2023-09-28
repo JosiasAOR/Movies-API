@@ -3,15 +3,37 @@ const path = require("path");
 const fs = require("fs");
 
 exports.exibirVideos = (req, res) => {
-  database.query(`SELECT * FROM SUA_TABELA ;`).then(
+  database.query(`SELECT * FROM videos ;`).then(
     (resultado) => {
-      res.status(200).send({ tarefas: resultado.rows });
+      res.status(200).send({ videos: resultado.rows });
     },
     (erro) => {
       res.status(500).send({ erro: erro });
     }
   );
 };
+
+exports.exibirVideoPorId = (req, res) => {
+  // Obtenha o ID do vídeo a partir dos parâmetros da URL
+  const videoId = req.params.id;
+
+  // Consulte o banco de dados usando o ID fornecido
+  database.query(`SELECT * FROM videos WHERE id = $1;`, [videoId])
+    .then(
+      (resultado) => {
+        // Verifique se um vídeo foi encontrado
+        if (resultado.rows.length === 1) {
+          res.status(200).send({ video: resultado.rows[0] });
+        } else {
+          res.status(404).send({ mensagem: 'Vídeo não encontrado' });
+        }
+      },
+      (erro) => {
+        res.status(500).send({ erro: erro });
+      }
+    );
+};
+
 
 const pastaVideo = path.join(__dirname, "..", "movies");
 
